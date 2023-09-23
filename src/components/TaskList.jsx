@@ -17,6 +17,12 @@ export const TaskList = () =>{
 
     const [tareas, setTareas] = useState(TaskListMartin)
 
+    const [newTarea, setNewTarea] = useState({
+        id: "",
+        tarea: "",
+        completado: false
+    })
+
     const onEliminarTarea = (id) =>{
         const eliminarTarea = tareas.filter((tarea)=>(
             tarea.id !== id
@@ -29,15 +35,35 @@ export const TaskList = () =>{
         ))
         setTareas(actulizarTarea)
     }
+    
+    const onChangeInput = (event) =>{
+        setNewTarea({
+            id: tareas.length + 1,
+            tarea: event.target.value,
+            completado: false
+        })
+    }
+
+    const onAgregarTarea = (event) =>{
+        event.preventDefault()
+        setTareas([...tareas, newTarea])
+        return alert("Tarea agrega")
+    }
 
     return(
         <div>
             <h2>EJERCICIO CON USESTATE</h2>
+
+            <form action="" onSubmit={onAgregarTarea}>
+                <input type="text" onChange={onChangeInput}  />
+                <input type="submit" />
+            </form>
+
             <button onClick={()=>setTareas(TaskListMartin)}>Restablecer Tareas</button>
             {
                 tareas.map((tarea)=>(
                     <div>
-                        <p style={{background: `${tarea.completado === true ? "green" : "red"}` , color: "white"}}>{tarea.tarea} - { tarea.completado === true ? "COMPLETADO" : "FALTA" }</p>
+                        <p style={{background: `${tarea.completado === true ? "green" : "red"}` , color: "white"}}>{tarea.tarea} - { tarea.completado === true ? "COMPLETADO" : "FALTA" }-</p>
                         <button onClick={()=>onActualizarTarea(tarea.id)}>Completar Tarea</button>
                         <button onClick={()=>onEliminarTarea(tarea.id)}>Eliminar Tarea</button>
                     </div>
